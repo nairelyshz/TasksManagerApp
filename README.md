@@ -13,9 +13,6 @@ Aplicación móvil de gestión de tareas con autenticación JWT, construida con 
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Arquitectura](#arquitectura)
 - [Funcionalidades](#funcionalidades)
-- [Screenshots](#screenshots)
-- [Decisiones Técnicas](#decisiones-técnicas)
-- [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -26,14 +23,10 @@ Aplicación móvil de gestión de tareas con autenticación JWT, construida con 
 - ✅ CRUD completo de tareas
 - ✅ Toggle rápido de estado (completado/pendiente)
 - ✅ Estadísticas de tareas
-- ✅ Pull to refresh
 - ✅ Validaciones de formularios
 - ✅ Manejo de errores robusto
-- ✅ Optimistic updates (UI rápida)
 - ✅ Material Design 3
-- ✅ Tema claro y oscuro
 - ✅ Componentes reutilizables
-- ✅ Logging completo
 - ✅ Confirmaciones de acciones destructivas
 
 ---
@@ -69,7 +62,6 @@ Esta app requiere que el backend esté corriendo:
 
 ```bash
 # Backend debe estar en: http://localhost:3000/api
-# Ver ../task-manager-backend/README.md para instrucciones
 ```
 
 ### Dispositivos/Emuladores
@@ -99,7 +91,7 @@ flutter doctor
 
 ```bash
 # Clonar repositorio
-git clone <repository-url>
+git clone https://github.com/nairelyshz/TasksManagerApp.git
 cd task_manager_app
 
 # Instalar dependencias
@@ -385,136 +377,14 @@ UI actualiza automáticamente
 
 ---
 
-## 📱 Screenshots
-
-_(Agrega capturas de pantalla aquí)_
-
-### Pantalla de Login
-
-- Campos de email y contraseña
-- Botón de inicio de sesión
-- Link a registro
-
-### Pantalla de Registro
-
-- Formulario completo
-- Validaciones visuales
-- Confirmación de contraseña
-
-### Home - Lista de Tareas
-
-- Estadísticas en card
-- Lista de tareas con checkbox
-- FAB para nueva tarea
-- Pull to refresh
-
-### Dialog Crear/Editar
-
-- Formulario modal
-- Campos validados
-- Botones de acción
-
----
-
 ## 🔐 Credenciales de Prueba
 
 Si el backend tiene datos seed, puedes usar:
 
-**Email:** `john.doe@example.com`  
+**Email:** `demo@example.com`  
 **Password:** `password123`
 
 O crear tu propia cuenta usando el registro.
-
----
-
-## 🎨 Decisiones Técnicas
-
-### 1. BLoC Pattern
-
-**Decisión:** Usar BLoC para gestión de estado.
-
-**Razones:**
-
-- ✅ Separación clara de UI y lógica de negocio
-- ✅ Testeable fácilmente
-- ✅ Escalable para apps grandes
-- ✅ Reactive programming
-- ✅ Single source of truth
-
-**Implementación:**
-
-- `AuthBloc`: Gestiona autenticación y sesión
-- `TasksBloc`: Gestiona CRUD de tareas
-- Estados inmutables con Equatable
-- Eventos para cada acción de usuario
-
-### 2. Clean Architecture
-
-**Decisión:** Arquitectura en capas (core/features).
-
-**Estructura:**
-
-- `core/`: Código compartido (services, models, widgets)
-- `features/`: Módulos por dominio (auth, tasks)
-- Cada feature tiene: data, presentation
-
-**Ventajas:**
-
-- ✅ Modularidad
-- ✅ Reutilización
-- ✅ Mantenibilidad
-- ✅ Testability
-
-### 3. Dio vs http
-
-**Decisión:** Usar **Dio** para requests HTTP.
-
-**Razones:**
-
-- ✅ Interceptors para tokens automáticos
-- ✅ Manejo de errores robusto
-- ✅ Timeouts configurables
-- ✅ Logging built-in
-- ✅ Request/Response transformers
-
-### 4. Secure Storage
-
-**Decisión:** `flutter_secure_storage` para tokens JWT.
-
-**Razones:**
-
-- ✅ Encriptación nativa (Keychain en iOS, KeyStore en Android)
-- ✅ Protección contra acceso no autorizado
-- ✅ Persistente entre sesiones
-- ✅ No accesible desde otras apps
-
-### 5. Optimistic Updates
-
-**Decisión:** UI actualiza antes de confirmar con backend.
-
-**Beneficios:**
-
-- ✅ UX más rápida y fluida
-- ✅ App se siente instantánea
-- ✅ Rollback automático en caso de error
-
-**Implementación:**
-
-- Toggle: UI cambia inmediatamente
-- Delete: Item se elimina de lista
-- Si falla: Revert + snackbar error
-
-### 6. Material Design 3
-
-**Decisión:** `useMaterial3: true`
-
-**Características:**
-
-- ✅ Nuevos componentes MD3
-- ✅ Color schemes semánticos
-- ✅ Elevaciones sutiles
-- ✅ Bordes redondeados
-- ✅ Tema claro/oscuro automático
 
 ---
 
@@ -698,67 +568,6 @@ flutter doctor                 # Diagnóstico del entorno
 
 ---
 
-## 🐛 Troubleshooting
-
-### Error: No se puede conectar al backend
-
-**Síntoma:** "Error de conexión" al hacer login
-
-**Solución:**
-
-1. Verificar que backend esté corriendo: `curl http://localhost:3000/api/health`
-2. Verificar URL en `api_constants.dart` según tu plataforma
-3. Para Android: Usar `http://10.0.2.2:3000/api`
-4. Para dispositivo físico: Usar IP local (ambos en misma red WiFi)
-
-### Error: "Unauthorized" constante
-
-**Síntoma:** Token no se envía
-
-**Solución:**
-
-1. Verificar que el token se guarde: Ver logs en consola
-2. Reiniciar app completamente (hot restart no es suficiente)
-3. Limpiar storage: Desinstalar y reinstalar app
-
-### Error: Pantalla blanca al iniciar
-
-**Síntoma:** App se queda en blanco
-
-**Solución:**
-
-```bash
-flutter clean
-flutter pub get
-flutter run
-```
-
-### Hot Reload no funciona
-
-**Síntoma:** Cambios no se reflejan
-
-**Solución:**
-
-- Press `R` (Hot Restart) en lugar de `r` (Hot Reload)
-- Para cambios en main(), models o servicios, requiere Hot Restart
-
-### Errores de compilación iOS
-
-**Síntoma:** Build falla en Xcode
-
-**Solución:**
-
-```bash
-cd ios
-rm -rf Pods Podfile.lock
-pod install
-cd ..
-flutter clean
-flutter run
-```
-
----
-
 ## 🔐 Seguridad
 
 ### Implementado
@@ -768,14 +577,6 @@ flutter run
 - ✅ HTTPS ready (cambiar baseUrl a https)
 - ✅ Validaciones de formularios
 - ✅ Sanitización de inputs
-
-### Recomendaciones para Producción
-
-- ⚠️ Usar HTTPS en producción
-- ⚠️ Implementar certificate pinning
-- ⚠️ Ofuscar código (ProGuard en Android)
-- ⚠️ Habilitar code obfuscation en iOS
-- ⚠️ Validar certificados SSL
 
 ---
 
@@ -804,15 +605,6 @@ flutter run
 
 ## 🧩 Convenciones de Código
 
-Ver `AGENTS.md` para reglas del proyecto:
-
-- ✅ Actuar como desarrollador senior
-- ✅ Construir componentes reutilizables
-- ✅ Usar Material Design
-- ✅ Usar BLoC para gestión de estado
-
----
-
 ## ⭐ Funcionalidad Opcional Implementada: Filtros de Tareas
 
 Se implementaron **filtros interactivos** para mejorar la experiencia del usuario.
@@ -826,43 +618,10 @@ Se implementaron **filtros interactivos** para mejorar la experiencia del usuari
 - ✅ **Cambio instantáneo** - Filtrado en cliente (sin backend)
 - ✅ **UI Material Design** - FilterChips con iconos y colores
 
-### ¿Por qué filtros?
+### 🎨 Funcionalidades Extras
 
-- 🎯 **UX**: Ayuda a enfocarse cuando hay muchas tareas
-- ⚡ **Performance**: Filtrado local (instantáneo)
-- 📊 **Visual**: Colores semánticos (verde = bien, naranja = pendiente)
-- 🔮 **Escalable**: Base para búsqueda y más filtros
-
-**Ver:** `FUNCIONALIDAD_OPCIONAL.md` en la raíz del proyecto para detalles completos.
-
----
-
-## 🎯 Próximas Características
-
-- [ ] Búsqueda de tareas
-- [ ] Categorías/etiquetas
-- [ ] Fechas límite
-- [ ] Notificaciones push
-- [ ] Sincronización offline
-- [ ] Modo oscuro manual (switch)
-- [ ] Compartir tareas
-- [ ] Exportar tareas
-
----
-
-## 🧪 Testing
-
-```bash
-# Ejecutar todos los tests
-flutter test
-
-# Con coverage
-flutter test --coverage
-
-# Ver coverage
-genhtml coverage/lcov.info -o coverage/html
-open coverage/html/index.html
-```
+- ✅ **Filtros de Tareas en Frontend** - Filtrar por: Todas, Completadas, Pendientes. Es una funcioanlidad que aporta mucho a la app cuando tiene mucha información
+- ✅ **Contadores dinámicos** - Porque ofrecen un resumen actual del estatus general de las tareas, fácil de entender por el usuario a simple vista
 
 ---
 
@@ -899,16 +658,6 @@ open ios/Runner.xcworkspace
 
 ---
 
-## 📄 Licencia
-
-UNLICENSED - Proyecto de prueba técnica
-
----
-
-## 👨‍💻 Autor
-
-Desarrollado como parte de una prueba técnica Full Stack Developer para Sappito Tech.
-
 **Stack:**
 
 - Backend: NestJS + PostgreSQL + Docker
@@ -924,39 +673,6 @@ Desarrollado como parte de una prueba técnica Full Stack Developer para Sappito
 - [Dio Documentation](https://pub.dev/packages/dio)
 
 ---
-
-## 📞 Soporte
-
-Para reportar bugs o solicitar features, por favor abre un issue en el repositorio.
-
----
-
-## ✅ Checklist de Desarrollo
-
-- [x] Proyecto Flutter creado
-- [x] Dependencias instaladas
-- [x] Arquitectura definida
-- [x] Autenticación implementada
-- [x] Persistencia de sesión
-- [x] CRUD de tareas completo
-- [x] UI Material Design
-- [x] Validaciones de formularios
-- [x] Manejo de errores
-- [x] Loading states
-- [x] Componentes reutilizables
-- [x] Integración con backend
-- [x] Optimistic updates
-- [x] Pull to refresh
-- [ ] Tests unitarios
-- [ ] Tests de integración
-- [ ] Screenshots
-- [ ] Deploy APK/IPA
-
----
-
-## 🎊 ¡Listo para Usar!
-
-La aplicación está completamente funcional y lista para ser probada.
 
 **Ejecuta:**
 
